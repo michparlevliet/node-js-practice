@@ -1,10 +1,16 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Righteous&display=swap');
+/* font-family: 'DM Serif Display', serif; */
+/* font-family: 'Righteous', cursive; */
+
 body {
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  background-color: white;
+  font-family:'DM Serif Display', serif;
+  background-color: rgb(250, 243, 224);
 }
 a {
+  font-family: 'Righteous', cursive;
   text-decoration: none;
-  color: rgb(104, 27, 40);
+  color: rgb(94, 24, 24);
 }
 li {
   list-style: none;
@@ -12,38 +18,107 @@ li {
   margin-left: 2em;
 }
 header {
-  padding: 1em 2em;
+  margin: 1em 2em;
+  padding: 0 2em;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgb(252, 206, 193);
+  border-radius: 10em;
+}
+#main-navigation {
+  font-size: 1.25em;
 }
 a:hover {
-  color: rgb(254, 180, 192);
+  color: red;
 }
 #main {
-  background-color: rgb(254, 200, 200);
-  color: rgb(104, 27, 40);
+  /* background-image: linear-gradient(rgb(250, 206, 206), rgb(247, 165, 179)); */
   padding: 2em 4em;
   display:flex;
-  text-shadow: rgb(249, 178, 178) 0 2px 5px;
+  
 }
+
 .main-text {
   flex: 3 0 0;
 }
 .page-title {
   text-transform: capitalize;
-  font-size: 5em;
+  font-size: 4em;
+  font-family: 'Righteous', cursive;
+  color:  rgb(94, 24, 24);
+  padding: 0.5em 0;
 }
 .subtitle {
-  font-weight: 300;
-  font-size: 2em;
+  font-size: 1.5em;
+  text-shadow: none;
+  color:  rgb(94, 24, 24);
 }
 .main-img {
   border-radius:10em;
-  background-color: rgb(249, 178, 178);
+  border: 7px dotted rgb(94, 24, 24);
   padding:2em;
 }
 .img-container {
   flex:1 0 0;
 }
+
+section .page-title {
+  font-size: 2em;
+  padding: 0;
+}
+.about-info {
+  color:rgb(94, 24, 24);
+  font-size: 1em;
+}
+.contact li {
+  display:block;
+}
+.products {
+  font-family:'DM Serif Display', serif;
+  font-size: 0.5em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content:center;
+  padding: 2em 0;
+  gap: 2em; 
+}
+.product-box {
+  flex: 0.5 0 0;
+  display: flex;
+  flex-flow:row;
+  gap: 1em;
+  align-items: center;
+  border-radius:5em;
+  border: 7px dotted rgb(94, 24, 24);
+  padding: 1em;
+}
+.product-box:hover {
+  background-color:rgb(94, 24, 24);
+  color:rgb(250, 243, 224);
+}
+.product-box img {
+  border-radius: 10em;
+  background-color: rgb(252, 206, 193);
+  padding:1em;
+  max-width:max-content;
+}
+.product-desc {
+  font-size: 0.75em;
+  font-weight: 200;
+  margin: 0.5em;
+}
+button {
+  font-family: 'Righteous', cursive;
+  background-color: rgb(252, 206, 193);
+  border-radius: 5em;
+  border: none;
+  padding: 1em;
+  margin: 0.5em;
+}
+button:hover {
+  background-color: red;
+  color:rgb(250, 243, 224);
+}
+
 

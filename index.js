@@ -4,7 +4,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 const { request } = require("http");
 
 // Mongo
-const dbUrl =  "mongodb://127.0.0.1:27017";
+const dbUrl =  "mongodb://testdbuser:test123!@127.0.0.1:27017/?authMechanism=DEFAULT&authSource=testdb";
 const client = new MongoClient(dbUrl);
 
 
@@ -23,35 +23,21 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// var links = [
-//   {
-//     name: "Home",
-//     path: "/"
-//   },
-//   {
-//     name: "About",
-//     path: "/about"
-//   },
-//   {
-//     name: "Shop",
-//     path: "/"
-//   }
-// ];
-
 app.get("/", async (request, response) => {
-//   response.status(200).send("Test page");
   links = await getLinks();
   response.render("index", { title: "Home", menu: links });
 });
 
 app.get("/about", async (request, response) => {
   links = await getLinks();
-  response.render("about", { title: "About", menu: links });
+  info = await getAboutInfo();
+  response.render("about", { title: "About", menu: links, about: info });
 });
 
 app.get("/shop", async (request, response) => {
   links = await getLinks();
-  response.render("shop", {title: "Shop", menu: links});
+  products = await getProducts();
+  response.render("shop", {title: "Shop", menu: links, shop: products});
 });
 
 app.get("/admin/menu", async (request, response) => {
@@ -93,13 +79,23 @@ app.get("/admin/menu/edit", async (request, response) => {
   } else {
     response.redirect("/admin/menu");
   }
-
 });
+app.get("/shop/product", async (request, response) => {
+  if (request.query.productId) {
+    let id = request.query.productId;
+    let productView = await getSingleProduct(id);
+    links = await getLinks();
+    response.render("product", { title: "View Product", menu: links, product: productView});
+  } else {
+    response.redirect("/shop");
+  }
+});
+
 app.post("/admin/menu/edit/submit", async (request, response) => {
   // fill out code for lab
   // get the _id to use as a filter
-  let id = request.query.linkId;
-  let idFilter = { _id: new ObjectId(id) };
+  let id = request.body.linkId;
+
   let weightVal = request.body.weight;
   let pathVal = request.body.path;
   let nameVal = request.body.name;
@@ -110,7 +106,10 @@ app.post("/admin/menu/edit/submit", async (request, response) => {
     name: nameVal
   };
   // run editLink()
-  await editLink(idFilter, link);
+  let editIdFilter = { _id: new ObjectId(id)};
+
+
+  await editLink(editIdFilter, link);
   response.redirect("/admin/menu");
 })
 
@@ -125,10 +124,22 @@ async function connection() {
   db = client.db("testdb");
   return db;
 }
-// async function to retriev all links docs from menuLinks collection
+// async function to retrieve all links docs from menuLinks collection
 async function getLinks() {
   db = await connection();
   var results = db.collection("menuLinks").find({}); // {} as the query means no filter, so select all
+  res = await results.toArray();
+  return res;
+}
+async function getAboutInfo() {
+  db = await connection();
+  var results = db.collection("aboutInfo").find({});
+  res = await results.toArray();
+  return res;
+}
+async function getProducts() {
+  db = await connection();
+  var results = db.collection("products").find({});
   res = await results.toArray();
   return res;
 }
@@ -153,23 +164,22 @@ async function getSingleLink(id) {
   const result = db.collection("menuLinks").findOne(editIdFilter);
   return result;
 }
+async function getSingleProduct(id) {
+  db = await connection();
+  const viewIdFilter = { _id: Object(id) };
+  const result = db.collection("products").findOne(viewIdFilter);
+  return result;
+}
 // async function to edit one document
-async function editLink(filter, link) {
+async function editLink(id, link) {
   // fill out
   db = await connection();
-  // const links = db.collection("menuLinks");
-
-  // const filter = { _id: ObjectId(id)};
   
   const updateLink = {
-    $set: {
-       weight: link.weight,
-       path: link.path,
-       name: link.name 
-    },
+    $set: link,
   };
-  const result = await db.collection("menuLinks").updateOne(filter, updateLink);
+  const result = await db.collection("menuLinks").updateOne(id, updateLink);
   
   console.log("link updated");
-  // return result;
+  return result;
 }

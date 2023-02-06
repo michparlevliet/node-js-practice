@@ -1,5 +1,14 @@
 extends layout 
 
 block main-content 
-  h1.page-title About Us 
-  p This is a short blurb about our company.
+  section
+    h1.page-title About Us 
+    div.about-info
+      each info in about
+        p Coco's bakery was founded in #{info.dateFounded} and specializes in colourful cakes. We offer preorder and walk-in orders with a typical turn around time of 2 days per cake. Our order process is currently menu-based but please reach out to us if you are interested in a custom cake. You can find us on 123 Cake Avenue in Cake Town. Come by our shop to see our amazing collections and designs, and stay a while! Thanks for your support &#9786
+    h2.subtitle Contact
+    div.about-info 
+      ul.contact 
+        each info in about
+          li Address: #{info.address}
+          li Phone: #{info.phoneNum}

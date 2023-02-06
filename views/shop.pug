@@ -1,1 +1,16 @@
-extend layout 
+extends layout 
+
+block main-content 
+  section
+    h1.page-title Shop Cakes
+      div.products 
+        each product in shop
+          div.product-box 
+            img(src=product.imageId, alt="Cake", height="300px")
+            h2.product-name #{product.name}
+              p.product-desc Flavor: #{product.flavor}
+              p.product-desc Cake Color: #{product.cakeColor}
+              p.product-desc Icing Color: #{product.icingColor}
+              form(action="/shop/product")
+                input(type="hidden", name="productId", value=product._id)
+                button.product-details(type="submit") More Details
